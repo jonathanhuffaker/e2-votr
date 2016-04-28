@@ -3,12 +3,25 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Votr.DAL;
 using System.Collections.Generic;
 using Votr.Models;
+using Moq;
+using System.Linq;
 
 namespace Votr.Tests.DAL
 {
     [TestClass]
     public class VotrRepositoryTest
     {
+        [TestInitialize]
+        public void Initialize()
+        {
+
+        }
+
+        [TestCleanup]
+        {
+        
+        }
+
         [TestMethod]
         public void RepoEnsureICanCreateInstance()
         {
@@ -31,8 +44,16 @@ namespace Votr.Tests.DAL
         [TestMethod]
         public void RepoEnsureThereAreNoPolls()
         {
+            //Mocking
+            List<Poll> datasource = new List<Poll>();
+            Mock<VotrContext> mock_context = new Mock<VotrContext>();
+            Mock<DbSet<Poll>> mock_polls_table = new Mock<DbSet<Poll>>(); //fake Polls table
+
             // Arrange 
-            VotrRepository repo = new VotrRepository();
+            VotrRepository repo = new VotrRepository(mock_context.Object);//Injects mocked (fake) VotrContext
+            IQueryable<Poll> data = datasource.AsQueryable(); // Turn List<Poll> into something we can query with Linq
+            //var data = mock_polls.AsQueryable(); // This is cool too.
+            mock_polls_table.As<IQueryable<Poll>>().Setup(m => m, GetEnumerator()).Returns(datasource.GetEnumerator());
 
             // Act
             List<Poll> list_of_polls = repo.GetPolls();
