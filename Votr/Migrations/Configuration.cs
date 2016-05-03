@@ -1,5 +1,6 @@
 namespace Votr.Migrations
 {
+    using Models;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
@@ -26,6 +27,15 @@ namespace Votr.Migrations
             //      new Person { FullName = "Rowan Miller" }
             //    );
             //
+
+            DateTime basetime = DateTime.Now;
+
+            context.Polls.AddOrUpdate(poll => poll.Title,
+            new Poll { Title = "Best Pizza Joint 2014", StartDate = DateTime.Now, EndDate = basetime.AddDays(1) },
+            new Poll { Title = "Best Pizza Joint 2012", StartDate = basetime.AddMonths(2), EndDate = basetime.AddMonths(2).AddHours(6) },
+            new Poll { Title = "Best Pizza Joint 2013", StartDate = basetime.AddHours(1), EndDate = basetime.AddHours(7) },
+            new Poll { Title = "Best Pizza Joint 2015", StartDate = basetime.AddHours(2), EndDate = basetime.AddHours(7) }
+            );
         }
     }
 }

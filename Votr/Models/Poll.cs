@@ -24,6 +24,9 @@ namespace Votr.Models
         public virtual ICollection<Option> Options { get; set; }
         // Tag Relation
         // User Relation
+        public virtual ApplicationUser CreatedBy { get; set; }
         // Vote Relation 
+
+
     }
 }
