@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Votr.DAL;
+using Votr.Models;
 
 namespace Votr.Controllers
 {
@@ -13,8 +14,8 @@ namespace Votr.Controllers
         // GET: Poll
         public ActionResult Index()
         {
-            ViewBag.Polls = Repo.GetPolls();
-            return View();
+            //ViewBag.Polls = Repo.GetPolls();
+            return View(Repo.GetPolls());
         }
 
         // GET: Poll/Details/5
@@ -48,7 +49,13 @@ namespace Votr.Controllers
         // GET: Poll/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            Poll found_poll = Repo.GetPollOrNull(id);
+            if (found_poll == null)
+            {
+                return RedirectToAction("Index");
+
+            }
+            return View(found_poll);
         }
 
         // POST: Poll/Edit/5
