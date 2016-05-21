@@ -164,7 +164,10 @@ namespace Votr.DAL
 
         }
 
-
+        public bool HasVote (int poll_id, string user_id)
+        {
+            return context.Votes.Any(v => v.Voter.Id == user_id && v.Poll.PollId == poll_id);
+        }
         // Create a Poll
 
         // Delete a Poll
